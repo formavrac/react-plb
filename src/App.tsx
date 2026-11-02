@@ -1,5 +1,6 @@
+import { useState } from "react"
 import Author, { type Author as AuthorType } from "./components/Author"
-import Book from "./components/Book"
+import Book, { type Book as BookType } from "./components/Book"
 import type { Movie } from "./components/Movie"
 import MovieList from "./components/MovieList"
 
@@ -96,17 +97,29 @@ function App() {
     { id: 5, title: 'Catwoman', year: 2004, rating: 3.4 },
   ]
 
+  const [selectedBook, setSelectedBook] = useState<BookType>()
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">Bookorama</h1>
 
-        <div className="grid grid-cols-4 gap-4">
-          <Book book={book} />
-          <Book book={book} active={book.year < 1954} />
-          <Book book={book} />
+        {selectedBook && <div className="flex justify-center mb-4">
+          <div className="w-1/4">
+            <Book
+              book={selectedBook}
+              onSelect={() => setSelectedBook(undefined)}
+            />
+          </div>
+        </div>}
 
-          {books.map(b => <Book book={b} key={b.id} />)}
+        <div className="grid grid-cols-4 gap-4">
+          {books.map(b => <Book
+            book={b}
+            onSelect={() => setSelectedBook(b)}
+            active={b.id !== selectedBook?.id}
+            key={b.id}
+          />)}
 
           {/*<ul>
           {[1, 2, 3].map(n =>

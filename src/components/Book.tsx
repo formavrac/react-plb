@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Button from './Button'
 
 export type Book = {
@@ -11,9 +12,20 @@ export type Book = {
 type BookProps = {
   book: Book
   active?: boolean
+  onSelect: () => void
 }
 
-function Book({ book, active = true }: BookProps) {
+function Book({ book, active = true, onSelect }: BookProps) {
+  const [like, setLike] = useState(0)
+
+  const handleClick = () => {
+    setLike(like => like + 1)
+  }
+
+  const handleSee = () => {
+    onSelect()
+  }
+
   if (!active) return
 
   return (
@@ -32,7 +44,10 @@ function Book({ book, active = true }: BookProps) {
         <h2 className="text-md text-gray-600 mb-2">{book.author}</h2>
         <p className="text-sm text-gray-500 mb-2">Publié en {book.year}</p>
 
-        <Button>Voir</Button>
+        <Button onClick={handleSee}>Voir</Button>
+        <Button onClick={handleClick} title={`() => setLike(${like} + 1)`}>
+          ❤️‍🔥 {like > 0 && <>({like})</>}
+        </Button>
       </div>
     </div>
   )
