@@ -3,7 +3,7 @@ type ButtonProps = {
 
 function Button({ children, ...props }: ButtonProps) {
   return (
-    <button className="bg-blue-500 hover:bg-blue-800 text-white py-1.5 px-4 rounded-md duration-300" {...props}>
+    <button className="bg-blue-500 hover:bg-blue-800 text-white py-1.5 px-4 rounded-md duration-300 disabled:opacity-50" {...props}>
       {children}
     </button>
   )

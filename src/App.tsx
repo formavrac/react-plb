@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Author, { type Author as AuthorType } from "./components/Author"
 import Book, { type Book as BookType } from "./components/Book"
+import Counter from "./components/Counter"
 import type { Movie } from "./components/Movie"
 import MovieList from "./components/MovieList"
 
@@ -137,6 +138,14 @@ function App() {
         <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Films</h2>
 
         <MovieList movies={movies} />
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Compteurs</h2>
+
+        <div className="flex flex-col gap-4">
+          <Counter />
+          <Counter initialValue={5} />
+          <Counter initialValue={8} max={10} />
+        </div>
 
         <MovieList movies={movies.slice(0, 3)} />
       </div>
