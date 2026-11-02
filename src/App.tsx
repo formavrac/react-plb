@@ -1,4 +1,7 @@
+import Author, { type Author as AuthorType } from "./components/Author"
 import Book from "./components/Book"
+import type { Movie } from "./components/Movie"
+import MovieList from "./components/MovieList"
 
 function App() {
   const book = {
@@ -76,6 +79,23 @@ function App() {
     }
   ]
 
+  const authors: AuthorType[] = [
+    { id: 1, name: 'J.R.R. Tolkien', birthDate: '1892-01-03' },
+    { id: 2, name: 'Antoine de Saint-Exupéry', birthDate: '1900-06-29' },
+    { id: 3, name: 'George Orwell', birthDate: '1903-06-25' },
+    { id: 4, name: 'Albert Camus', birthDate: '1913-11-07' },
+    { id: 5, name: 'J.K. Rowling', birthDate: '1965-07-31' },
+    { id: 6, name: 'Stephen King', birthDate: '1947-09-21' },
+  ]
+
+  const movies: Movie[] = [
+    { id: 1, title: 'Inception', year: 2010, rating: 8.8 },
+    { id: 2, title: 'Le Fabuleux Destin d\'Amélie Poulain', year: 2001, rating: 8.3 },
+    { id: 3, title: 'Jurassic Park', year: 1993, rating: 7.5 },
+    { id: 4, title: 'Avatar', year: 2009, rating: 6.5 },
+    { id: 5, title: 'Catwoman', year: 2004, rating: 3.4 },
+  ]
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
@@ -94,6 +114,18 @@ function App() {
           )}
           </ul>*/}
         </div>
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Auteurs</h2>
+
+        <div className="grid grid-cols-3 gap-4">
+          {authors.map(a => <Author author={a} key={a.id} />)}
+        </div>
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Films</h2>
+
+        <MovieList movies={movies} />
+
+        <MovieList movies={movies.slice(0, 3)} />
       </div>
     </div>
   )
