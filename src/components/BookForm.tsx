@@ -1,4 +1,4 @@
-import { type SubmitEvent, useState } from 'react'
+import { type SubmitEvent, useEffect, useState } from 'react'
 import type { Book } from './Book'
 import Button from './Button'
 import { cn } from 'cn'
@@ -14,6 +14,12 @@ type BookFormProps = {
 function BookForm({ book, onCancel, onChange, onSave }: BookFormProps) {
   const [localBook, setLocalBook] = useState(book)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    // console.log('Le composant apparait')
+
+    // return () => console.log('le composant disparait')
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const book = { ...localBook, [event.target.name]: event.target.value }

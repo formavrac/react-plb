@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Author, { type Author as AuthorType } from "./components/Author"
 import Book, { type Book as BookType } from "./components/Book"
 import Counter from "./components/Counter"
@@ -9,6 +9,8 @@ import BookForm from "./components/BookForm"
 import StateChallenge from "./components/StateChallenge"
 import StateChallengeObject from "./components/StateChallengeObject"
 import EventListenerChallenge from "./components/EventListenerChallenge"
+import axios from "axios"
+import Clock from "./components/Clock"
 
 export const BOOKS = [
   {
@@ -86,7 +88,34 @@ export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 let nextId = 11
 
 function App() {
-  const [books, setBooks] = useState<BookType[]>(BOOKS)
+  const [books, setBooks] = useState<BookType[]>([])
+  const [showForm, setShowForm] = useState(false)
+
+  useEffect(() => { // Quand le composant est prêt, on fetch
+    const loadBooks = async () => {
+      console.log('API')
+      const response = await axios.get<BookType[]>('http://localhost:3000/books')
+      console.log(response.data)
+      setBooks(response.data)
+    }
+
+    loadBooks()
+  }, [])
+
+  useEffect(() => { // Quand le composant est prêt et que showForm est true
+    let interval: any
+
+    if (showForm) {
+      // interval = setInterval(() => console.log('run effect'), 1000)
+    }
+
+    // console.log('after')
+
+    return () => { // Se déclenche avant chaque rerun de useEffect
+      // console.log('before')
+      // clearInterval(interval)
+    }
+  }, [showForm]) // Quand showForm change (uniquement), on redéclenche le useEffect
 
   const authors: AuthorType[] = [
     { id: 1, name: 'J.R.R. Tolkien', birthDate: '1892-01-03' },
@@ -106,7 +135,6 @@ function App() {
   ]
 
   const [selectedBook, setSelectedBook] = useState<BookType>()
-  const [showForm, setShowForm] = useState(false)
   const [newBook, setNewBook] = useState<BookType>({
     id: 0,
     title: '',
@@ -153,6 +181,7 @@ function App() {
                 setSelectedBook(undefined)
               }}
               onSave={handleUpdateBook}
+              key={selectedBook.id}
             />
           </div>
         </div>}
@@ -182,6 +211,7 @@ function App() {
 
         {showForm && <div className="mt-4">
           <pre>{JSON.stringify(newBook, null, 2)}</pre>
+          <Clock />
           <BookForm
             book={newBook}
             onCancel={toggleForm}
