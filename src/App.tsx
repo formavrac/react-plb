@@ -5,6 +5,7 @@ import Counter from "./components/Counter"
 import type { Movie } from "./components/Movie"
 import MovieList from "./components/MovieList"
 import Button from "./components/Button"
+import BookForm from "./components/BookForm"
 
 export const BOOKS = [
   {
@@ -102,14 +103,28 @@ function App() {
   ]
 
   const [selectedBook, setSelectedBook] = useState<BookType>()
+  const [showForm, setShowForm] = useState(false)
+  const [newBook, setNewBook] = useState<BookType>({
+    id: 0,
+    title: '',
+    author: '',
+    year: 0,
+    image: '',
+  })
+
+  const toggleForm = () => {
+    setShowForm(!showForm)
+  }
 
   const handleAddBook = () => {
     const randomBook = BOOKS[Math.floor(Math.random() * BOOKS.length)]
 
     setBooks([
       ...books, // [{1}, {2}, {3}] => {1}, {2}, {3}
-      { ...randomBook, id: nextId++ } // { id: 10, title: 'machin', ..., id: 10++ }
+      { ...newBook, id: nextId++ } // { id: 10, title: 'machin', ..., id: 10++ }
     ])
+    setNewBook({ id: 0, title: '', author: '', year: 0, image: '' })
+    toggleForm()
   }
 
   const handleRemoveBook = (book: BookType) => {
@@ -156,11 +171,21 @@ function App() {
           </ul>*/}
         </div>
 
-        <div className="text-center py-10">
-          <Button onClick={handleAddBook}>
+        {!showForm && <div className="text-center py-10">
+          <Button onClick={toggleForm}>
             Ajouter un livre
           </Button>
-        </div>
+        </div>}
+
+        {showForm && <div className="mt-4">
+          <pre>{JSON.stringify(newBook, null, 2)}</pre>
+          <BookForm
+            book={newBook}
+            onCancel={toggleForm}
+            onChange={(book: BookType) => setNewBook(book)}
+            onSave={handleAddBook}
+          />
+        </div>}
 
         <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Auteurs</h2>
 
