@@ -14,10 +14,13 @@ type BookProps = {
   active?: boolean
   onSelect: () => void
   onRemove: () => void
+  onSave: (book: Book) => void
 }
 
-function Book({ book, active = true, onSelect, onRemove }: BookProps) {
+function Book({ book, active = true, onSelect, onRemove, onSave }: BookProps) {
   const [like, setLike] = useState(0)
+  const [editMode, setEditMode] = useState(false)
+  const [localBook, setLocalBook] = useState(book)
 
   const handleClick = () => {
     setLike(like => like + 1)
@@ -31,7 +34,53 @@ function Book({ book, active = true, onSelect, onRemove }: BookProps) {
     onRemove()
   }
 
+  const toggleEdit = () => {
+    setEditMode(!editMode)
+
+    if (!editMode) {
+      setLocalBook(book) // "reset" du state
+    }
+  }
+
+  const handleSave = (event: React.SubmitEvent) => {
+    event.preventDefault()
+
+    onSave(localBook)
+    setEditMode(false)
+  }
+
   if (!active) return
+
+  if (editMode) {
+    return (
+      <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+        <div className="p-4">
+          <form onSubmit={handleSave}>
+            <div className="mb-2">
+              <label htmlFor="title">Titre</label>
+              {JSON.stringify(localBook)}
+              <input
+                id="title"
+                type="text"
+                className="border border-gray-300 rounded-md py-1 px-2 w-full"
+                value={localBook.title}
+                onChange={(event) => setLocalBook({ ...localBook, title: event.target.value })}
+              />
+            </div>
+
+            <div className="flex gap-2 flex-wrap">
+              <Button title="Annuler" onClick={toggleEdit} className="bg-red-500 hover:bg-red-800" type="button">
+                Annuler
+              </Button>
+              <Button title="Sauvegarder">
+                Sauvegarder
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
@@ -55,6 +104,9 @@ function Book({ book, active = true, onSelect, onRemove }: BookProps) {
         </Button>
         <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
           🗑️
+        </Button>
+        <Button title="Modifier" onClick={toggleEdit}>
+          Modifier
         </Button>
       </div>
     </div>
