@@ -78,6 +78,7 @@ export const BOOKS = [
     image: '/assets/la-peste.jpg',
   }
 ]
+export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 let nextId = 11
 
 function App() {
