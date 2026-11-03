@@ -6,6 +6,9 @@ import type { Movie } from "./components/Movie"
 import MovieList from "./components/MovieList"
 import Button from "./components/Button"
 import BookForm from "./components/BookForm"
+import StateChallenge from "./components/StateChallenge"
+import StateChallengeObject from "./components/StateChallengeObject"
+import EventListenerChallenge from "./components/EventListenerChallenge"
 
 export const BOOKS = [
   {
@@ -206,6 +209,18 @@ function App() {
         </div>
 
         <MovieList movies={movies.slice(0, 3)} />
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Animaux</h2>
+
+        <StateChallenge />
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Animaux (state objet)</h2>
+
+        <StateChallengeObject />
+
+        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Oiseaux</h2>
+
+        <EventListenerChallenge />
       </div>
     </div>
   )
