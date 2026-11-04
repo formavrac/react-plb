@@ -16,6 +16,7 @@ const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: 'a-propos', Component: About },
       { path: 'livre/:id', Component: BookSingle },
+      { path: '*', Component: () => <h1>404</h1> },
     ]
   },
 ])

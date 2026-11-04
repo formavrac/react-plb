@@ -1,4 +1,5 @@
-import { Link, Outlet } from 'react-router'
+import { ViewTransition } from 'react'
+import { Link, NavLink, Outlet } from 'react-router'
 
 export const BOOKS = [
   {
@@ -80,11 +81,19 @@ function App() {
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
         <nav className="flex gap-4">
-          <Link to="/">Accueil</Link>
-          <Link to="/a-propos">A propos</Link>
+          <NavLink
+            to="/"
+            className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
+          >Accueil</NavLink>
+          <NavLink
+            to="/a-propos"
+            className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
+          >A propos</NavLink>
         </nav>
 
-        <Outlet />
+        <ViewTransition>
+          <Outlet />
+        </ViewTransition>
       </div>
     </div>
   )

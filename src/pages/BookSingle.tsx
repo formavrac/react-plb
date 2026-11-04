@@ -52,6 +52,7 @@ function BookSingle() {
 
   return book && (
     <div className="flex gap-8 mt-8">
+      <title>{`${book.title} - Bookorama`}</title>
       {book.image &&
         <div className="w-1/2">
           <img
