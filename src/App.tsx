@@ -93,6 +93,10 @@ function App() {
               to="/a-propos"
               className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
             >A propos</NavLink>
+            <NavLink
+              to="/todos"
+              className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
+            >Todos</NavLink>
           </nav>
 
           {user && <div>

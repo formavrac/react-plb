@@ -8,6 +8,7 @@ import BookSingle from './pages/BookSingle.tsx'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
 import { UserProvider } from './contexts/UserContext.tsx'
+import TodoList from './pages/TodoList.tsx'
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: 'a-propos', Component: About },
       { path: 'livre/:id', Component: BookSingle },
+      { path: 'todos', Component: TodoList },
       { path: '*', Component: () => <h1>404</h1> },
     ]
   },
