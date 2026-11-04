@@ -3,6 +3,7 @@ import type { Book } from './Book'
 import Button from './Button'
 import { cn } from 'cn'
 import { AUTHORS } from '../App'
+import axios from 'axios'
 
 type BookFormProps = {
   book: Book
@@ -16,10 +17,15 @@ function BookForm({ book, onCancel, onChange, onSave }: BookFormProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    // console.log('Le composant apparait')
+    console.log('Le composant apparait')
 
-    // return () => console.log('le composant disparait')
+    return () => console.log('le composant disparait')
   }, [])
+
+  useEffect(() => {
+    console.log('Le livre local a changé', localBook)
+    axios.get('http://localhost:3000/books/1')
+  }, [localBook])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const book = { ...localBook, [event.target.name]: event.target.value }

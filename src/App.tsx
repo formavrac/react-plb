@@ -11,6 +11,7 @@ import StateChallengeObject from "./components/StateChallengeObject"
 import EventListenerChallenge from "./components/EventListenerChallenge"
 import axios from "axios"
 import Clock from "./components/Clock"
+import RecapUseEffect from "./components/RecapUseEffect"
 
 export const BOOKS = [
   {
@@ -251,6 +252,8 @@ function App() {
         <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Oiseaux</h2>
 
         <EventListenerChallenge />
+
+        <RecapUseEffect />
       </div>
     </div>
   )

@@ -16,10 +16,10 @@ function Clock() {
 
   // Cette fonction est appelée si le composant est mis à jour (date qui change)
   useEffect(() => {
-    console.log(date) // Retourne la nouvelle date
+    //console.log(date) // Retourne la nouvelle date
 
     return () => {
-      console.log(date) // Retourne l'ancienne date
+      //console.log(date) // Retourne l'ancienne date
     }
   }, [date])
 
