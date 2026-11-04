@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router'
 let nextId = 11
 
 function Home() {
-  const [books, setBooks] = useState<BookType[]>(BOOKS)
+  const [books, setBooks] = useState<BookType[]>([])
   const [selectedBook, setSelectedBook] = useState<BookType>()
   const [showForm, setShowForm] = useState(false)
   const [newBook, setNewBook] = useState<BookType>({
@@ -22,9 +22,10 @@ function Home() {
 
   useEffect(() => { // Quand le composant est prêt, on fetch
     const loadBooks = async () => {
-      console.log('API')
+      // console.log('API')
+      await new Promise(resolve => setTimeout(resolve, 1000))
       const response = await axios.get<BookType[]>('http://localhost:3000/books')
-      console.log(response.data)
+      // console.log(response.data)
       setBooks(response.data)
     }
 
