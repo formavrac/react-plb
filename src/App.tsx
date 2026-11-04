@@ -1,17 +1,4 @@
-import { useEffect, useState } from "react"
-import Author, { type Author as AuthorType } from "./components/Author"
-import Book, { type Book as BookType } from "./components/Book"
-import Counter from "./components/Counter"
-import type { Movie } from "./components/Movie"
-import MovieList from "./components/MovieList"
-import Button from "./components/Button"
-import BookForm from "./components/BookForm"
-import StateChallenge from "./components/StateChallenge"
-import StateChallengeObject from "./components/StateChallengeObject"
-import EventListenerChallenge from "./components/EventListenerChallenge"
-import axios from "axios"
-import Clock from "./components/Clock"
-import RecapUseEffect from "./components/RecapUseEffect"
+import { Link, Outlet } from 'react-router'
 
 export const BOOKS = [
   {
@@ -85,175 +72,19 @@ export const BOOKS = [
     image: '/assets/la-peste.jpg',
   }
 ]
+
 export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
-let nextId = 11
 
 function App() {
-  const [books, setBooks] = useState<BookType[]>([])
-  const [showForm, setShowForm] = useState(false)
-
-  useEffect(() => { // Quand le composant est prêt, on fetch
-    const loadBooks = async () => {
-      console.log('API')
-      const response = await axios.get<BookType[]>('http://localhost:3000/books')
-      console.log(response.data)
-      setBooks(response.data)
-    }
-
-    loadBooks()
-  }, [])
-
-  useEffect(() => { // Quand le composant est prêt et que showForm est true
-    let interval: any
-
-    if (showForm) {
-      // interval = setInterval(() => console.log('run effect'), 1000)
-    }
-
-    // console.log('after')
-
-    return () => { // Se déclenche avant chaque rerun de useEffect
-      // console.log('before')
-      // clearInterval(interval)
-    }
-  }, [showForm]) // Quand showForm change (uniquement), on redéclenche le useEffect
-
-  const authors: AuthorType[] = [
-    { id: 1, name: 'J.R.R. Tolkien', birthDate: '1892-01-03' },
-    { id: 2, name: 'Antoine de Saint-Exupéry', birthDate: '1900-06-29' },
-    { id: 3, name: 'George Orwell', birthDate: '1903-06-25' },
-    { id: 4, name: 'Albert Camus', birthDate: '1913-11-07' },
-    { id: 5, name: 'J.K. Rowling', birthDate: '1965-07-31' },
-    { id: 6, name: 'Stephen King', birthDate: '1947-09-21' },
-  ]
-
-  const movies: Movie[] = [
-    { id: 1, title: 'Inception', year: 2010, rating: 8.8 },
-    { id: 2, title: 'Le Fabuleux Destin d\'Amélie Poulain', year: 2001, rating: 8.3 },
-    { id: 3, title: 'Jurassic Park', year: 1993, rating: 7.5 },
-    { id: 4, title: 'Avatar', year: 2009, rating: 6.5 },
-    { id: 5, title: 'Catwoman', year: 2004, rating: 3.4 },
-  ]
-
-  const [selectedBook, setSelectedBook] = useState<BookType>()
-  const [newBook, setNewBook] = useState<BookType>({
-    id: 0,
-    title: '',
-    author: '',
-    year: 0,
-    image: '',
-  })
-
-  const toggleForm = () => {
-    setShowForm(!showForm)
-  }
-
-  const handleAddBook = () => {
-    const randomBook = BOOKS[Math.floor(Math.random() * BOOKS.length)]
-
-    setBooks([
-      ...books, // [{1}, {2}, {3}] => {1}, {2}, {3}
-      { ...newBook, id: nextId++ } // { id: 10, title: 'machin', ..., id: 10++ }
-    ])
-    setNewBook({ id: 0, title: '', author: '', year: 0, image: '' })
-    toggleForm()
-  }
-
-  const handleRemoveBook = (book: BookType) => {
-    setBooks(books.filter(b => b.id !== book.id))
-  }
-
-  const handleUpdateBook = (localBook: BookType) => {
-    setBooks(books.map(b => b.id === localBook.id ? localBook : b))
-  }
-
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">Bookorama</h1>
+        <nav className="flex gap-4">
+          <Link to="/">Accueil</Link>
+          <Link to="/a-propos">A propos</Link>
+        </nav>
 
-        {selectedBook && <div className="flex justify-center mb-4">
-          <div className="w-1/4">
-            <Book
-              book={selectedBook}
-              onSelect={() => setSelectedBook(undefined)}
-              onRemove={() => {
-                handleRemoveBook(selectedBook)
-                setSelectedBook(undefined)
-              }}
-              onSave={handleUpdateBook}
-              key={selectedBook.id}
-            />
-          </div>
-        </div>}
-
-        <div className="grid grid-cols-4 gap-4">
-          {books.map(b => <Book
-            book={b}
-            onSelect={() => setSelectedBook(b)}
-            active={b.id !== selectedBook?.id}
-            onRemove={() => handleRemoveBook(b)}
-            onSave={handleUpdateBook}
-            key={b.id}
-          />)}
-
-          {/*<ul>
-          {[1, 2, 3].map(n =>
-            <li>{n}</li>
-          )}
-          </ul>*/}
-        </div>
-
-        {!showForm && <div className="text-center py-10">
-          <Button onClick={toggleForm}>
-            Ajouter un livre
-          </Button>
-        </div>}
-
-        {showForm && <div className="mt-4">
-          <pre>{JSON.stringify(newBook, null, 2)}</pre>
-          <Clock />
-          <BookForm
-            book={newBook}
-            onCancel={toggleForm}
-            onChange={(book: BookType) => setNewBook(book)}
-            onSave={handleAddBook}
-          />
-        </div>}
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Auteurs</h2>
-
-        <div className="grid grid-cols-3 gap-4">
-          {authors.map(a => <Author author={a} key={a.id} />)}
-        </div>
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Films</h2>
-
-        <MovieList movies={movies} />
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Compteurs</h2>
-
-        <div className="flex flex-col gap-4">
-          <Counter />
-          <Counter initialValue={5} />
-          <Counter initialValue={8} max={10} />
-        </div>
-
-        <MovieList movies={movies.slice(0, 3)} />
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Animaux</h2>
-
-        <StateChallenge />
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Animaux (state objet)</h2>
-
-        <StateChallengeObject />
-
-        <h2 className="text-2xl font-bold text-blue-500 mt-8 mb-4">Oiseaux</h2>
-
-        <EventListenerChallenge />
-
-        <RecapUseEffect />
+        <Outlet />
       </div>
     </div>
   )
