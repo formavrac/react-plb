@@ -145,8 +145,8 @@ function Notifications() {
  * ============================
  */
 export default function RecapUseEffect() {
-  const user = { name: 'Charlie' }
   const [enable, setEnable] = useState(true)
+  const [user, setUser] = useState({ name: 'Charlie' })
 
   return (
     <div style={{ padding: 20, fontFamily: 'sans-serif' }}>
@@ -162,13 +162,17 @@ export default function RecapUseEffect() {
 
       <h2>❌ Mauvais usages de useEffect</h2>
       <BadCounter />
+      <select value={user.name} onChange={e => setUser({ name: e.target.value })}>
+        <option value="Charlie">Charlie</option>
+        <option value="Alice">Alice</option>
+      </select>
       <BadUser user={user} />
 
       <hr />
 
       <h2>✅ Versions correctes</h2>
       <GoodCounter />
-      <GoodUser user={user} />
+      <GoodUser user={user} key={user.name} />
     </div>
   )
 }
