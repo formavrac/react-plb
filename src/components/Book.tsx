@@ -3,6 +3,7 @@ import Button from './Button'
 import { AUTHORS } from '../App'
 import { cn } from 'cn'
 import { Link } from 'react-router'
+import { useUser } from '../contexts/UserContext'
 
 export type Book = {
   id: number
@@ -25,6 +26,7 @@ function Book({ book, active = true, onSelect, onRemove, onSave }: BookProps) {
   const [editMode, setEditMode] = useState(false)
   const [localBook, setLocalBook] = useState(book)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const { user } = useUser()
 
   const handleClick = () => {
     setLike(like => like + 1)
@@ -165,12 +167,14 @@ function Book({ book, active = true, onSelect, onRemove, onSave }: BookProps) {
         <Button onClick={handleClick} title={`() => setLike(${like} + 1)`}>
           ❤️‍🔥 {like > 0 && <>({like})</>}
         </Button>
-        <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
-          🗑️
-        </Button>
-        <Button title="Modifier" onClick={toggleEdit}>
-          Modifier
-        </Button>
+        {user && <>
+          <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
+            🗑️
+          </Button>
+          <Button title="Modifier" onClick={toggleEdit}>
+            Modifier
+          </Button>
+        </>}
       </div>
     </div>
   )

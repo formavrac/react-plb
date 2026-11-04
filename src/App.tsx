@@ -1,5 +1,6 @@
 import { ViewTransition } from 'react'
 import { Link, NavLink, Outlet } from 'react-router'
+import { useUser } from './contexts/UserContext'
 
 export const BOOKS = [
   {
@@ -77,19 +78,30 @@ export const BOOKS = [
 export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 
 function App() {
+  const { user, setUser } = useUser()
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
-        <nav className="flex gap-4">
-          <NavLink
-            to="/"
-            className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
-          >Accueil</NavLink>
-          <NavLink
-            to="/a-propos"
-            className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
-          >A propos</NavLink>
-        </nav>
+        <div className="flex justify-between">
+          <nav className="flex gap-4">
+            <NavLink
+              to="/"
+              className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
+            >Accueil</NavLink>
+            <NavLink
+              to="/a-propos"
+              className={({ isActive }) => `px-3 py-1 rounded ${isActive ? 'bg-blue-500 text-white' : ''}`}
+            >A propos</NavLink>
+          </nav>
+
+          {user && <div>
+            <h1>Bonjour {user.name}</h1>
+            <button onClick={() => setUser(null)}>Logout</button>
+          </div>}
+
+          {!user && <button onClick={() => setUser({ name: 'Fiorella' })}>Login</button>}
+        </div>
 
         <ViewTransition>
           <Outlet />
