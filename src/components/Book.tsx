@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Button from './Button'
 import { AUTHORS } from '../App'
 import { cn } from 'cn'
+import { Link } from 'react-router'
 
 export type Book = {
   id: number
@@ -152,7 +153,11 @@ function Book({ book, active = true, onSelect, onRemove, onSave }: BookProps) {
         <p>Pas d'image</p>
       )}
       <div className="p-4">
-        <h1 className="text-xl font-semibold text-gray-800">{book.title}</h1>
+        <h1 className="text-xl font-semibold text-gray-800">
+          <Link to={`/livre/${book.id}`}>
+            {book.title}
+          </Link>
+        </h1>
         <h2 className="text-md text-gray-600 mb-2">{book.author}</h2>
         <p className="text-sm text-gray-500 mb-2">Publié en {book.year}</p>
 

@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Book, { type Book as BookType } from '../components/Book'
 import { BOOKS } from '../App'
 import Button from '../components/Button'
 import BookForm from '../components/BookForm'
+import axios from 'axios'
 
 let nextId = 11
 
@@ -17,6 +18,17 @@ function Home() {
     year: 0,
     image: '',
   })
+
+  useEffect(() => { // Quand le composant est prêt, on fetch
+    const loadBooks = async () => {
+      console.log('API')
+      const response = await axios.get<BookType[]>('http://localhost:3000/books')
+      console.log(response.data)
+      setBooks(response.data)
+    }
+
+    loadBooks()
+  }, [])
 
   const toggleForm = () => {
     setShowForm(!showForm)
